@@ -32,6 +32,12 @@ Create all collections into database:
 npx prisma db push
 ```
 
+View database:
+```bash
+npx prisma studio
+```
+open [http://localhost:5555](http://localhost:5555) with your browser to view the database.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
