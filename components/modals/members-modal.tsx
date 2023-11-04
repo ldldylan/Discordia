@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react";
+import { MemberRole } from "@prisma/client";
 
 import {
     Dialog,
@@ -14,7 +15,7 @@ import { useModal } from "@/hooks/use-modal-store";
 import { ServerWithMembersWithProfiles } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserAvatar } from "@/components/user-avatar";
-import { MoreVertical, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
+import { Check, Gavel, Loader2, MoreVertical, Shield, ShieldAlert, ShieldCheck, ShieldQuestion } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -41,6 +42,16 @@ export const MembersModal = () => {
     const isModalOpen = isOpen && type === "members";
     const { server } = data as { server: ServerWithMembersWithProfiles};
     
+    const onRoleChange = async (memberId: string, role: MemberRole) => {
+        try {
+            setLoadingId(memberId);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoadingId("");
+        }
+    } 
+
     return (
         <Dialog open={isModalOpen} onOpenChange={onClose}>
             <DialogContent className="bg-white text-black overflow-hidden">
@@ -87,14 +98,43 @@ export const MembersModal = () => {
                                                 </DropdownMenuSubTrigger>
                                                 <DropdownMenuPortal>
                                                     <DropdownMenuSubContent>
+
                                                         <DropdownMenuItem>
+                                                            <Shield className="h-4 w-4 mr-2" />
                                                             Guest
+                                                            {member.role === "GUEST" && (
+                                                                <Check 
+                                                                    className="h-4 w-4 ml-auto"
+                                                                />
+                                                            )}
                                                         </DropdownMenuItem>
+
+                                                        <DropdownMenuItem>
+                                                            <ShieldCheck className="h-4 w-4 mr-2" />
+                                                            Moderator
+                                                            {member.role === "MODERATOR" && (
+                                                                <Check
+                                                                    className="h-4 w-4 ml-auto"
+                                                                />
+                                                            )}
+                                                        </DropdownMenuItem>
+
+
                                                     </DropdownMenuSubContent>
                                                 </DropdownMenuPortal>
                                             </DropdownMenuSub>
+                                            <DropdownMenuSeparator />
+                                            <DropdownMenuItem>
+                                                <Gavel className="h-4 w-4 mr-2" />
+                                                Kick
+                                            </DropdownMenuItem>
                                         </DropdownMenuContent>
                                     </DropdownMenu>
+                                    {loadingId === member.id && (
+                                        <Loader2 
+                                            className="animate-spin text-zinc-500 ml-auto w-4 h-4"
+                                        />
+                                    )}
                                 </div>
                                 )}
                         </div>
