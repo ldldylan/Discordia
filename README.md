@@ -22,6 +22,11 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Adding Schema to Node Modules
 
+Delete all data and reset data base: 
+```bash
+npx prisma migrate reset
+```
+
 Run this command every time the schema file is changed:
 ```bash
 npx prisma generate
