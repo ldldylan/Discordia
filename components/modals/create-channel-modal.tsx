@@ -27,6 +27,14 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from "@/components/ui/select";
+
 const formSchema = z.object({
     name: z.string().min(1, {
         message: "Server name is required"
