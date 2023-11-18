@@ -25,7 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 
 import {
@@ -35,7 +35,6 @@ import {
     SelectTrigger,
     SelectValue
 } from "@/components/ui/select";
-import { Channel } from "diagnostics_channel";
 import { useEffect } from "react";
 
 
@@ -54,35 +53,33 @@ const formSchema = z.object({
 export const EditChannelModal = () => {
     const { isOpen, onClose, type, data} = useModal();
     const router = useRouter();
-    const params = useParams();
 
     const isModalOpen = isOpen && type === "editChannel";
-    const {channelType} = data;
+    const { channel, server } = data;
 
     const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
-            type: channelType || ChannelType.TEXT,
+            type: channel?.type || ChannelType.TEXT,
         },
     });
 
     useEffect(() => {
-        if (channelType) {
-            form.setValue("type", channelType);
-        } else {
-            form.setValue("type", ChannelType.TEXT);
+        if (channel) {
+            form.setValue("name", channel.name);
+            form.setValue("type", channel.type);
         }
-    }, [channelType, form]);
+    }, [form, channel]);
 
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const url = qs.stringifyUrl({
-                url: "/api/channels",
+                url: "/api/channels/${channel?.id}",
                 query: {
-                    serverId: params?.serverId
+                    serverId: server?.id,
                 }
             });
             await axios.post(url, values);
@@ -106,7 +103,7 @@ export const EditChannelModal = () => {
 
                 <DialogHeader className="pt-8 px-6">
                     <DialogTitle className="text-2xl text-center font-bold">
-                        Create Channel
+                        Edit Channel
                     </DialogTitle>
                 </DialogHeader>
 
