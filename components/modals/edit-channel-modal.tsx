@@ -77,12 +77,12 @@ export const EditChannelModal = () => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             const url = qs.stringifyUrl({
-                url: "/api/channels/${channel?.id}",
+                url: `/api/channels/${channel?.id}`,
                 query: {
                     serverId: server?.id,
                 }
             });
-            await axios.post(url, values);
+            await axios.patch(url, values);
 
             form.reset();
             router.refresh();
