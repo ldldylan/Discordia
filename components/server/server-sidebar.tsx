@@ -11,6 +11,7 @@ import { ServerHeader } from "./server-header";
 import { ServerSearch } from "./server-search";
 import { ServerSection } from "./server-section";
 import { ServerChannel } from "./server-channel";
+import { ServerMember } from "./server-member";
 
 interface ServerSidebarProps {
     serverId: string;
@@ -130,14 +131,16 @@ export const ServerSidebar = async ({
                             role={role}
                             label="Text Channels"
                         />
-                        {textChannels.map((channel) => (
-                            <ServerChannel 
-                                key={channel.id}
-                                channel={channel}
-                                server={server}
-                                role={role}
-                            />
-                        ))}
+                        <div className="space-y-[2px]">
+                            {textChannels.map((channel) => (
+                                <ServerChannel 
+                                    key={channel.id}
+                                    channel={channel}
+                                    server={server}
+                                    role={role}
+                                />
+                            ))}
+                        </div>
                     </div>
                  )}
                 {!!audioChannels?.length && (
@@ -148,14 +151,16 @@ export const ServerSidebar = async ({
                             role={role}
                             label="Voice Channels"
                         />
-                        {audioChannels.map((channel) => (
-                            <ServerChannel
-                                key={channel.id}
-                                channel={channel}
-                                server={server}
-                                role={role}
-                            />
-                        ))}
+                        <div className="space-y-[2px]">
+                            {audioChannels.map((channel) => (
+                                <ServerChannel
+                                    key={channel.id}
+                                    channel={channel}
+                                    server={server}
+                                    role={role}
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
                 {!!videoChannels?.length && (
@@ -166,14 +171,31 @@ export const ServerSidebar = async ({
                             role={role}
                             label="Video Channels"
                         />
-                        {videoChannels.map((channel) => (
-                            <ServerChannel
-                                key={channel.id}
-                                channel={channel}
-                                server={server}
-                                role={role}
-                            />
-                        ))}
+                        <div className="space-y-[2px]">
+                            {videoChannels.map((channel) => (
+                                <ServerChannel
+                                    key={channel.id}
+                                    channel={channel}
+                                    server={server}
+                                    role={role}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
+                {!!members?.length && (
+                    <div className='mb-2'>
+                        <ServerSection
+                            sectionType="members" 
+                            role={role}
+                            label="Members"
+                            server={server}
+                        />
+                        <div className="space-y-[2px]">
+                            {members.map((member) => (
+                                <ServerMember />
+                            ))}
+                        </div>
                     </div>
                 )}
             </ScrollArea>
