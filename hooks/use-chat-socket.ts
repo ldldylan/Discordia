@@ -1,7 +1,6 @@
 import { useSocket } from "@/components/providers/socket-provider";
 import { Member, Message, Profile } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
-import { pages } from "next/dist/build/templates/app-page";
 import { useEffect } from "react";
 
 type ChatSocketProps = {
@@ -38,7 +37,7 @@ export const useChatSocket = ({
                 const newData = oldData.pages.maps((page: any) => {
                     return {
                         ...page,
-                        items: pages.items.map((item: MessageWithMemberWithProfile) => {
+                        items: page.items.map((item: MessageWithMemberWithProfile) => {
                             if (item.id === message.id) {
                                 return message;
                             }
@@ -47,7 +46,7 @@ export const useChatSocket = ({
                     }
                 });
                 return { 
-                    ...onloadeddata,
+                    ...oldData,
                     pages: newData,
                 }
             });
@@ -74,7 +73,7 @@ export const useChatSocket = ({
                 };
 
                 return {
-                    ...onloadeddata,
+                    ...oldData,
                     pages: newData,
                 };
             });
