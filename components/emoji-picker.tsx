@@ -27,7 +27,7 @@ export const EmojiPicker = ({
             <PopoverContent 
                 side="right"
                 sideOffset={40}
-                className="bg-transparent border-none shadow-non drop-shadow-none mb-16" 
+                className="bg-transparent border-none shadow-none drop-shadow-none mb-16" 
             >
                 <Picker
                     theme={resolvedTheme}
